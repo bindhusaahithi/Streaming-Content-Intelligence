@@ -1,8 +1,18 @@
-# Online Retail Statistics Project
+# Applied Science Retail Analytics Project
 
-A polished statistics project built around the UCI Online Retail dataset. This repository contains a complete analysis workflow with a Python script, a Jupyter notebook, generated visuals, and processed summary outputs.
+A role-aligned applied science portfolio project built around the UCI Online Retail dataset. This repository presents a complete analysis workflow with a Python script, a Jupyter notebook, generated visuals, and processed summary outputs.
 
 ![Executive dashboard](visuals/executive_dashboard.png)
+
+## Why This Matches Applied Science
+
+This project is framed to match an Applied Science internship because it demonstrates:
+
+- large-scale transactional data cleaning and feature engineering
+- customer behavior modeling with Recency, Frequency, and Monetary signals
+- quantitative segmentation for decision support
+- business-focused statistical analysis with clear visual communication
+- reproducible analytics workflows that can support downstream machine learning or experimentation
 
 ## Project Focus
 
@@ -39,9 +49,9 @@ Statistic/
 │       ├── top_countries.csv
 │       └── top_products.csv
 ├── notebooks/
-│   └── online_retail_statistics_project.ipynb
+│   └── applied_science_retail_analytics.ipynb
 ├── scripts/
-│   └── analyze_online_retail.py
+│   └── applied_science_retail_analysis.py
 ├── visuals/
 │   ├── customer_value_map.png
 │   ├── executive_dashboard.png
@@ -97,13 +107,13 @@ pip install -r requirements.txt
 Run the analysis script:
 
 ```bash
-python3 scripts/analyze_online_retail.py
+python3 scripts/applied_science_retail_analysis.py
 ```
 
 Open the notebook:
 
 ```bash
-jupyter notebook notebooks/online_retail_statistics_project.ipynb
+jupyter notebook notebooks/applied_science_retail_analytics.ipynb
 ```
 
 ## Dataset
@@ -117,3 +127,4 @@ The dataset used in this project is the Online Retail Excel dataset copied into:
 - The script generates all visuals and processed files automatically.
 - The notebook mirrors the project logic in a presentation-friendly format.
 - The repository intentionally avoids empty folders and unnecessary files.
+- The framing emphasizes customer analytics and segmentation to better match Applied Science internship expectations.
