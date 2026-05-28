@@ -1,11 +1,11 @@
 {
-  "records_after_cleaning": 397884,
-  "unique_customers": 4338,
-  "countries_covered": 37,
-  "study_period_start": "2010-12-01",
-  "study_period_end": "2011-12-09",
-  "total_revenue": 8911407.9,
-  "average_order_value": 480.87,
-  "median_order_value": 303.04,
-  "average_items_per_order": 278.86
+  "catalog_titles": 8807,
+  "movies": 6131,
+  "tv_shows": 2676,
+  "countries_covered": 87,
+  "genres_covered": 36,
+  "catalog_start_year": 1925,
+  "catalog_end_year": 2021,
+  "average_description_length": 23.88,
+  "median_content_age_at_add": 1.0
 }

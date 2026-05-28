@@ -1,0 +1,17 @@
+{
+  "accuracy": 0.7361,
+  "movie_precision": 0.7741,
+  "movie_recall": 0.8769,
+  "tv_precision": 0.5941,
+  "tv_recall": 0.4131,
+  "confusion_matrix": [
+    [
+      1076,
+      151
+    ],
+    [
+      314,
+      221
+    ]
+  ]
+}

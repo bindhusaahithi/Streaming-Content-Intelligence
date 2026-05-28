@@ -1,41 +1,39 @@
-# Applied Science Retail Analytics Project
+# Streaming Content Intelligence
 
-A role-aligned applied science portfolio project built around the UCI Online Retail dataset. This repository presents a complete analysis workflow with a Python script, a Jupyter notebook, generated visuals, and processed summary outputs.
+A polished analytics and modeling project built around the Netflix catalog dataset. This repository combines exploratory analysis, statistical testing, unsupervised clustering, and lightweight predictive modeling to study how a global streaming catalog is structured.
 
 ![Executive dashboard](visuals/executive_dashboard.png)
 
-## Why This Matches Applied Science
+## Why This Project Stands Out
 
-This project is framed to match an Applied Science internship because it demonstrates:
+This project is designed to feel modern and recruiter-friendly by showing:
 
-- large-scale transactional data cleaning and feature engineering
-- customer behavior modeling with Recency, Frequency, and Monetary signals
-- quantitative segmentation for decision support
-- statistical inference using bootstrap confidence intervals and non-parametric testing
-- business-focused statistical analysis with clear visual communication
-- reproducible analytics workflows that can support downstream machine learning or experimentation
-- testing and report artifacts that make the repository easier to validate and review
+- end-to-end data cleaning and feature engineering
+- decision-oriented catalog analytics
+- statistical inference with bootstrap confidence intervals and hypothesis testing
+- text-based content clustering with TF-IDF and KMeans
+- predictive modeling with an interpretable baseline classifier
+- reproducible outputs, tests, and an executive summary artifact
 
-## Project Focus
+## Business Questions
 
-This project answers practical statistics and business questions:
-
-- How does revenue change over time?
-- Which countries drive the most sales?
-- Which products generate the highest revenue?
-- What does the order-value distribution look like?
-- When are purchases most active during the week?
-- How can customers be segmented using Recency, Frequency, and Monetary behavior?
+- How is the catalog split between movies and TV shows?
+- Which countries and genres dominate the platform?
+- How long after release are titles typically added to the catalog?
+- Are rating distributions different for movies and TV shows?
+- What natural content clusters emerge from title and description text?
+- How well can simple metadata predict title type?
 
 ## Key Results
 
-- Cleaned transaction records: `397,884`
-- Unique customers: `4,338`
-- Countries covered: `37`
-- Study period: `2010-12-01` to `2011-12-09`
-- Total revenue: `$8,911,407.90`
-- Average order value: `$480.87`
-- Median order value: `$303.04`
+- Total titles analyzed: `8,807`
+- Movies: `6,131`
+- TV shows: `2,676`
+- Countries represented: `87`
+- Genres represented: `36`
+- Catalog release range: `1925` to `2021`
+- Average description length: `23.88` words
+- Median content age at platform arrival: `1.0` year
 
 ## Repository Structure
 
@@ -43,68 +41,67 @@ This project answers practical statistics and business questions:
 Statistic/
 ├── data/
 │   ├── raw/
-│   │   └── online_retail.xlsx
+│   │   └── netflix_titles.csv
 │   └── processed/
-│       ├── customer_rfm_segments.csv
-│       ├── monthly_revenue.csv
+│       ├── content_clusters.csv
+│       ├── country_catalog.csv
+│       ├── genre_catalog.csv
+│       ├── model_metrics.json
 │       ├── statistical_tests.json
-│       ├── summary_metrics.json
-│       ├── top_countries.csv
-│       └── top_products.csv
+│       └── summary_metrics.json
 ├── notebooks/
-│   └── applied_science_retail_analytics.ipynb
+│   └── streaming_content_intelligence.ipynb
 ├── reports/
 │   └── executive_summary.md
 ├── scripts/
-│   └── applied_science_retail_analysis.py
+│   └── streaming_content_intelligence.py
 ├── tests/
-│   └── test_outputs_exist.py
+│   └── test_project_outputs.py
 ├── visuals/
-│   ├── customer_value_map.png
+│   ├── catalog_additions_timeline.png
+│   ├── content_age_distribution.png
+│   ├── content_clusters.png
 │   ├── executive_dashboard.png
-│   ├── monthly_revenue_trend.png
-│   ├── order_value_distribution.png
-│   ├── revenue_heatmap.png
-│   ├── rfm_segments.png
-│   ├── top_countries_revenue.png
-│   └── top_products_revenue.png
+│   ├── rating_mix.png
+│   ├── top_countries_catalog.png
+│   ├── top_genres_catalog.png
+│   └── type_classifier_confusion_matrix.png
 ├── pyproject.toml
 ├── requirements.txt
 └── README.md
 ```
 
-## Visual Gallery
+## Visual Highlights
 
-### Monthly Revenue
+### Catalog Additions Timeline
 
-![Monthly revenue trend](visuals/monthly_revenue_trend.png)
+![Catalog additions timeline](visuals/catalog_additions_timeline.png)
 
-### Top Countries by Revenue
+### Top Countries
 
-![Top countries revenue](visuals/top_countries_revenue.png)
+![Top countries catalog](visuals/top_countries_catalog.png)
 
-### Top Products by Revenue
+### Top Genres
 
-![Top products revenue](visuals/top_products_revenue.png)
+![Top genres catalog](visuals/top_genres_catalog.png)
 
-### Revenue Heatmap
+### Content Clusters
 
-![Revenue heatmap](visuals/revenue_heatmap.png)
+![Content clusters](visuals/content_clusters.png)
 
-### RFM Segments
+### Type Classifier
 
-![RFM segments](visuals/rfm_segments.png)
+![Type classifier confusion matrix](visuals/type_classifier_confusion_matrix.png)
 
-## Statistical Workflow
+## Technical Workflow
 
-1. Load the online retail transaction file.
-2. Remove missing customer IDs, cancellations, non-positive quantities, and non-positive prices.
-3. Create revenue features and monthly time variables.
-4. Compute descriptive statistics and grouped summaries.
-5. Visualize time trends, country performance, product performance, and order-value behavior.
-6. Build customer segments using RFM scoring.
-7. Quantify uncertainty with bootstrap intervals and compare segments with non-parametric tests.
-8. Export a concise executive summary for stakeholder consumption.
+1. Load and clean the catalog dataset.
+2. Engineer country, genre, cast-size, description-length, and catalog-timing features.
+3. Quantify platform composition and content timing patterns.
+4. Test catalog behavior differences with chi-square and Mann-Whitney U tests.
+5. Discover content families with TF-IDF text features and KMeans clustering.
+6. Train a baseline classifier to predict whether a title is a movie or TV show.
+7. Export decision-ready visuals, summary files, and an executive report.
 
 ## How To Run
 
@@ -114,35 +111,26 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Or use project metadata:
+Or install from project metadata:
 
 ```bash
 pip install .
 ```
 
-Run the analysis script:
+Run the pipeline:
 
 ```bash
-python3 scripts/applied_science_retail_analysis.py
+python3 scripts/streaming_content_intelligence.py
 ```
 
 Open the notebook:
 
 ```bash
-jupyter notebook notebooks/applied_science_retail_analytics.ipynb
+jupyter notebook notebooks/streaming_content_intelligence.ipynb
 ```
-
-## Dataset
-
-The dataset used in this project is the Online Retail Excel dataset copied into:
-
-`data/raw/online_retail.xlsx`
 
 ## Notes
 
-- The script generates all visuals and processed files automatically.
-- The notebook mirrors the project logic in a presentation-friendly format.
-- The repository intentionally avoids empty folders and unnecessary files.
-- The framing emphasizes customer analytics and segmentation to better match Applied Science internship expectations.
-- `reports/executive_summary.md` provides a stakeholder-friendly summary.
-- `tests/test_outputs_exist.py` provides a lightweight quality check for core outputs.
+- The project avoids unrelated assets and empty folders.
+- `reports/executive_summary.md` provides a concise stakeholder-facing summary.
+- `tests/test_project_outputs.py` provides a lightweight validation layer for the generated artifacts.

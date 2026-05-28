@@ -2,21 +2,22 @@
 
 ## Overview
 
-This applied science retail analytics project studies transactional behavior across 37 countries and 4,338 customers between 2010-12-01 and 2011-12-09.
+This project analyzes 8,807 titles in a global streaming catalog spanning 1925 to 2021.
 
 ## Business Highlights
 
-- Total cleaned revenue reached $8,911,407.90.
-- Average order value was $480.87, with a 95% bootstrap confidence interval of $459.37 to $507.66.
-- The top revenue-generating country was United Kingdom at $7,308,391.55.
-- The top revenue-generating product was "PAPER CRAFT , LITTLE BIRDIE" at $168,469.60.
+- The catalog contains 6,131 movies and 2,676 TV shows across 87 countries.
+- The most represented country is United States.
+- The most represented primary genre is Dramas.
+- Median content age at platform arrival is 1.0 years.
 
 ## Statistical Findings
 
-- UK vs non-UK order values were significantly different under a Mann-Whitney U test with p-value 0.000000.
-- Champions vs At Risk customers also showed a statistically significant difference in monetary value with p-value 0.000000.
-- Mean month-over-month revenue growth was 3.62%.
+- Mean description length is 23.88 words with a 95% bootstrap confidence interval of 23.82 to 23.94 words.
+- Rating distribution is significantly associated with title type under a chi-square test with p-value 0.000000.
+- Content age at addition differs significantly between movies and TV shows with p-value 0.000000.
+- A lightweight title-type classifier reached 73.61% accuracy using country, rating, release year, cast size, and description length.
 
-## Applied Science Relevance
+## Machine Learning Insight
 
-This repository demonstrates data cleaning, feature engineering, segmentation, non-parametric testing, and decision-oriented reporting in a reproducible workflow suitable for applied science portfolio use.
+The largest content cluster is cluster 3, characterized by terms: movies, dramas, international, comedies, family, independent, romantic, children.

@@ -1,25 +1,19 @@
 {
-  "average_order_value_bootstrap": {
-    "mean": 480.87,
-    "ci_95_low": 459.37,
-    "ci_95_high": 507.66
+  "description_length_bootstrap": {
+    "mean": 23.88,
+    "ci_95_low": 23.82,
+    "ci_95_high": 23.94
   },
-  "uk_vs_non_uk_order_value_test": {
+  "rating_vs_type_chi_square": {
+    "test": "Chi-square",
+    "chi2_statistic": 1048.2488259548372,
+    "p_value": 4.270421694469957e-212
+  },
+  "movie_vs_tv_content_age_test": {
     "test": "Mann-Whitney U",
-    "sample_size_per_group": 1886,
-    "uk_median": 292.75,
-    "non_uk_median": 424.43,
-    "p_value": 6.881044144408793e-55
-  },
-  "monthly_revenue_growth": {
-    "average_growth_rate": 0.0362,
-    "std_growth_rate": 0.2948
-  },
-  "champions_vs_at_risk_monetary_test": {
-    "test": "Mann-Whitney U",
-    "sample_size_per_group": 808,
-    "champions_median": 2601.89,
-    "at_risk_median": 198.24,
-    "p_value": 1.2441210575342594e-265
+    "sample_size_per_group": 1500,
+    "movie_median_years": 1.5,
+    "tv_median_years": 0.0,
+    "p_value": 1.8390395188972217e-41
   }
 }
