@@ -9,6 +9,7 @@ def test_core_artifacts_exist() -> None:
     required = [
         ROOT / "README.md",
         ROOT / "pyproject.toml",
+        ROOT / "app" / "streamlit_app.py",
         ROOT / "notebooks" / "streaming_content_intelligence.ipynb",
         ROOT / "scripts" / "streaming_content_intelligence.py",
         ROOT / "reports" / "executive_summary.md",

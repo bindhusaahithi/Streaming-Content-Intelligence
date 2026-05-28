@@ -12,6 +12,7 @@ dependencies = [
   "scikit-learn",
   "scipy",
   "seaborn",
+  "streamlit",
 ]
 
 [tool.setuptools]

@@ -13,6 +13,7 @@ This project is designed to feel modern and recruiter-friendly by showing:
 - statistical inference with bootstrap confidence intervals and hypothesis testing
 - text-based content clustering with TF-IDF and KMeans
 - predictive modeling with an interpretable baseline classifier
+- an interactive Streamlit application for recruiter-friendly exploration
 - reproducible outputs, tests, and an executive summary artifact
 
 ## Business Questions
@@ -51,6 +52,8 @@ Statistic/
 │       └── summary_metrics.json
 ├── notebooks/
 │   └── streaming_content_intelligence.ipynb
+├── app/
+│   └── streamlit_app.py
 ├── reports/
 │   └── executive_summary.md
 ├── scripts/
@@ -129,8 +132,15 @@ Open the notebook:
 jupyter notebook notebooks/streaming_content_intelligence.ipynb
 ```
 
+Run the Streamlit app:
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
 ## Notes
 
 - The project avoids unrelated assets and empty folders.
 - `reports/executive_summary.md` provides a concise stakeholder-facing summary.
 - `tests/test_project_outputs.py` provides a lightweight validation layer for the generated artifacts.
+- `app/streamlit_app.py` provides an interactive demo layer that is easier for recruiters to review quickly.
