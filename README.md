@@ -4,6 +4,24 @@ A polished analytics and modeling project built around the Netflix catalog datas
 
 ![Executive dashboard](visuals/executive_dashboard.png)
 
+## Interactive Demo
+
+This project also includes a polished Streamlit app for interactive review:
+
+- App file: `app/streamlit_app.py`
+- Run locally:
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+The app presents the project as a recruiter-friendly analytics product with:
+
+- a cinematic overview dashboard
+- statistical findings and model metrics
+- an interactive cluster explorer
+- executive-summary and artifact review sections
+
 ## Why This Project Stands Out
 
 This project is designed to feel modern and recruiter-friendly by showing:
