@@ -1,0 +1,18 @@
+[project]
+name = "applied-science-retail-analytics"
+version = "0.1.0"
+description = "Industry-style applied science portfolio project for retail transaction analytics and customer segmentation."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "jupyter",
+  "matplotlib",
+  "numpy",
+  "openpyxl",
+  "pandas",
+  "scipy",
+  "seaborn",
+]
+
+[tool.setuptools]
+py-modules = []

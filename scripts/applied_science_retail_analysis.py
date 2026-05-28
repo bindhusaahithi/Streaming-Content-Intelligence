@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import argparse
 import json
+import logging
 import os
 from pathlib import Path
 
@@ -8,6 +10,7 @@ import matplotlib
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from scipy import stats
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -16,14 +19,20 @@ import matplotlib.pyplot as plt
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "raw" / "online_retail.xlsx"
 PROCESSED_DIR = ROOT / "data" / "processed"
+REPORTS_DIR = ROOT / "reports"
 VISUALS_DIR = ROOT / "visuals"
 SUMMARY_PATH = PROCESSED_DIR / "summary_metrics.json"
 RFM_PATH = PROCESSED_DIR / "customer_rfm_segments.csv"
 MONTHLY_PATH = PROCESSED_DIR / "monthly_revenue.csv"
+STAT_TESTS_PATH = PROCESSED_DIR / "statistical_tests.json"
+EXEC_SUMMARY_PATH = REPORTS_DIR / "executive_summary.md"
+
+logger = logging.getLogger(__name__)
 
 
 def ensure_dirs() -> None:
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     VISUALS_DIR.mkdir(parents=True, exist_ok=True)
     os.environ.setdefault("MPLCONFIGDIR", str(ROOT / ".mplconfig"))
     (ROOT / ".mplconfig").mkdir(exist_ok=True)
@@ -128,6 +137,64 @@ def create_rfm_segments(df: pd.DataFrame) -> pd.DataFrame:
     choices = ["Champions", "Loyal", "Promising", "At Risk"]
     rfm["Segment"] = np.select(conditions, choices, default="At Risk")
     return rfm.sort_values(["Segment", "Monetary"], ascending=[True, False])
+
+
+def bootstrap_mean_ci(values: pd.Series, n_boot: int = 1000, seed: int = 42) -> dict[str, float]:
+    rng = np.random.default_rng(seed)
+    arr = values.to_numpy(dtype=float)
+    samples = rng.choice(arr, size=(n_boot, len(arr)), replace=True).mean(axis=1)
+    low, high = np.percentile(samples, [2.5, 97.5])
+    return {
+        "mean": round(float(arr.mean()), 2),
+        "ci_95_low": round(float(low), 2),
+        "ci_95_high": round(float(high), 2),
+    }
+
+
+def run_statistical_tests(df: pd.DataFrame, monthly: pd.DataFrame, rfm: pd.DataFrame) -> dict[str, float | str]:
+    order_values = df.groupby("InvoiceNo").agg(
+        OrderValue=("Revenue", "sum"),
+        Country=("Country", "first"),
+    )
+    uk_orders = order_values.loc[order_values["Country"] == "United Kingdom", "OrderValue"]
+    non_uk_orders = order_values.loc[order_values["Country"] != "United Kingdom", "OrderValue"]
+    sample_size = min(len(uk_orders), len(non_uk_orders), 5000)
+    uk_sample = uk_orders.sample(sample_size, random_state=42)
+    non_uk_sample = non_uk_orders.sample(sample_size, random_state=42)
+    mannwhitney = stats.mannwhitneyu(uk_sample, non_uk_sample, alternative="two-sided")
+
+    monthly_revenue = monthly["Revenue"]
+    revenue_growth = monthly_revenue.pct_change().dropna()
+
+    champions = rfm.loc[rfm["Segment"] == "Champions", "Monetary"]
+    at_risk = rfm.loc[rfm["Segment"] == "At Risk", "Monetary"]
+    segment_sample = min(len(champions), len(at_risk), 1000)
+    champions_sample = champions.sample(segment_sample, random_state=42)
+    at_risk_sample = at_risk.sample(segment_sample, random_state=42)
+    segment_test = stats.mannwhitneyu(champions_sample, at_risk_sample, alternative="greater")
+
+    tests = {
+        "average_order_value_bootstrap": bootstrap_mean_ci(order_values["OrderValue"]),
+        "uk_vs_non_uk_order_value_test": {
+            "test": "Mann-Whitney U",
+            "sample_size_per_group": int(sample_size),
+            "uk_median": round(float(uk_sample.median()), 2),
+            "non_uk_median": round(float(non_uk_sample.median()), 2),
+            "p_value": float(mannwhitney.pvalue),
+        },
+        "monthly_revenue_growth": {
+            "average_growth_rate": round(float(revenue_growth.mean()), 4),
+            "std_growth_rate": round(float(revenue_growth.std()), 4),
+        },
+        "champions_vs_at_risk_monetary_test": {
+            "test": "Mann-Whitney U",
+            "sample_size_per_group": int(segment_sample),
+            "champions_median": round(float(champions_sample.median()), 2),
+            "at_risk_median": round(float(at_risk_sample.median()), 2),
+            "p_value": float(segment_test.pvalue),
+        },
+    }
+    return tests
 
 
 def apply_theme() -> None:
@@ -296,15 +363,63 @@ def write_outputs(summary: dict, monthly: pd.DataFrame, country: pd.DataFrame, p
     rfm.to_csv(RFM_PATH, index=False)
 
 
+def write_statistical_tests(tests: dict) -> None:
+    STAT_TESTS_PATH.write_text(json.dumps(tests, indent=2))
+
+
+def write_executive_summary(summary: dict, tests: dict, country: pd.DataFrame, product: pd.DataFrame) -> None:
+    top_country = country.iloc[0]["Country"]
+    top_country_revenue = country.iloc[0]["Revenue"]
+    top_product = product.iloc[0]["Description"]
+    top_product_revenue = product.iloc[0]["Revenue"]
+    avg_ci = tests["average_order_value_bootstrap"]
+    content = f"""# Executive Summary
+
+## Overview
+
+This applied science retail analytics project studies transactional behavior across {summary['countries_covered']} countries and {summary['unique_customers']:,} customers between {summary['study_period_start']} and {summary['study_period_end']}.
+
+## Business Highlights
+
+- Total cleaned revenue reached ${summary['total_revenue']:,.2f}.
+- Average order value was ${summary['average_order_value']:,.2f}, with a 95% bootstrap confidence interval of ${avg_ci['ci_95_low']:,.2f} to ${avg_ci['ci_95_high']:,.2f}.
+- The top revenue-generating country was {top_country} at ${top_country_revenue:,.2f}.
+- The top revenue-generating product was "{top_product}" at ${top_product_revenue:,.2f}.
+
+## Statistical Findings
+
+- UK vs non-UK order values were significantly different under a Mann-Whitney U test with p-value {tests['uk_vs_non_uk_order_value_test']['p_value']:.6f}.
+- Champions vs At Risk customers also showed a statistically significant difference in monetary value with p-value {tests['champions_vs_at_risk_monetary_test']['p_value']:.6f}.
+- Mean month-over-month revenue growth was {tests['monthly_revenue_growth']['average_growth_rate']:.2%}.
+
+## Applied Science Relevance
+
+This repository demonstrates data cleaning, feature engineering, segmentation, non-parametric testing, and decision-oriented reporting in a reproducible workflow suitable for applied science portfolio use.
+"""
+    EXEC_SUMMARY_PATH.write_text(content)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run the applied science retail analytics pipeline.")
+    parser.add_argument("--data-path", type=Path, default=DATA_PATH, help="Path to the raw retail dataset.")
+    return parser.parse_args()
+
+
 def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+    args = parse_args()
+    global DATA_PATH
+    DATA_PATH = args.data_path
     ensure_dirs()
     apply_theme()
+    logger.info("Loading and cleaning data from %s", DATA_PATH)
     df = load_and_clean_data()
     summary = build_summary(df)
     monthly = create_monthly_revenue(df)
     country = create_country_summary(df)
     product = create_product_summary(df)
     rfm = create_rfm_segments(df)
+    tests = run_statistical_tests(df, monthly, rfm)
 
     plot_monthly_revenue(monthly)
     plot_top_countries(country[country["Country"] != "United Kingdom"])
@@ -316,6 +431,8 @@ def main() -> None:
     plot_executive_dashboard(summary, monthly, country, rfm)
 
     write_outputs(summary, monthly, country, product, rfm)
+    write_statistical_tests(tests)
+    write_executive_summary(summary, tests, country, product)
     print(json.dumps(summary, indent=2))
     print(f"Saved visuals to {VISUALS_DIR}")
 

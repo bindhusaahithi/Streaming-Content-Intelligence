@@ -11,8 +11,10 @@ This project is framed to match an Applied Science internship because it demonst
 - large-scale transactional data cleaning and feature engineering
 - customer behavior modeling with Recency, Frequency, and Monetary signals
 - quantitative segmentation for decision support
+- statistical inference using bootstrap confidence intervals and non-parametric testing
 - business-focused statistical analysis with clear visual communication
 - reproducible analytics workflows that can support downstream machine learning or experimentation
+- testing and report artifacts that make the repository easier to validate and review
 
 ## Project Focus
 
@@ -45,13 +47,18 @@ Statistic/
 │   └── processed/
 │       ├── customer_rfm_segments.csv
 │       ├── monthly_revenue.csv
+│       ├── statistical_tests.json
 │       ├── summary_metrics.json
 │       ├── top_countries.csv
 │       └── top_products.csv
 ├── notebooks/
 │   └── applied_science_retail_analytics.ipynb
+├── reports/
+│   └── executive_summary.md
 ├── scripts/
 │   └── applied_science_retail_analysis.py
+├── tests/
+│   └── test_outputs_exist.py
 ├── visuals/
 │   ├── customer_value_map.png
 │   ├── executive_dashboard.png
@@ -61,6 +68,7 @@ Statistic/
 │   ├── rfm_segments.png
 │   ├── top_countries_revenue.png
 │   └── top_products_revenue.png
+├── pyproject.toml
 ├── requirements.txt
 └── README.md
 ```
@@ -95,6 +103,8 @@ Statistic/
 4. Compute descriptive statistics and grouped summaries.
 5. Visualize time trends, country performance, product performance, and order-value behavior.
 6. Build customer segments using RFM scoring.
+7. Quantify uncertainty with bootstrap intervals and compare segments with non-parametric tests.
+8. Export a concise executive summary for stakeholder consumption.
 
 ## How To Run
 
@@ -102,6 +112,12 @@ Install dependencies:
 
 ```bash
 pip install -r requirements.txt
+```
+
+Or use project metadata:
+
+```bash
+pip install .
 ```
 
 Run the analysis script:
@@ -128,3 +144,5 @@ The dataset used in this project is the Online Retail Excel dataset copied into:
 - The notebook mirrors the project logic in a presentation-friendly format.
 - The repository intentionally avoids empty folders and unnecessary files.
 - The framing emphasizes customer analytics and segmentation to better match Applied Science internship expectations.
+- `reports/executive_summary.md` provides a stakeholder-friendly summary.
+- `tests/test_outputs_exist.py` provides a lightweight quality check for core outputs.
