@@ -9,6 +9,7 @@ A polished analytics and modeling project built around the Netflix catalog datas
 This project also includes a polished Streamlit app for interactive review:
 
 - App file: `app/streamlit_app.py`
+- Live demo: [streaming-content-intelligence-bindhu.streamlit.app](https://streaming-content-intelligence-bindhu.streamlit.app/)
 - Run locally:
 
 ```bash
